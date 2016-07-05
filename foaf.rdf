@@ -21,6 +21,7 @@
 <foaf:knows rdf:resource="http://stanford.edu/~dlrueda/foaf.rdf"/>
 <foaf:knows rdf:resource="http://stanford.edu/~sdoljack/sdoljack_foaf.rdf"/>
 <foaf:knows rdf:resource="http://stanford.edu/~laneymcg/laney.rdf"/>
+<foaf:knows rdf:resource="http://stanford.edu/~arcadia/foaf.rdf"/>
 <foaf:knows rdf:resource="http://stanford.edu/~thorsenh/foaf.rdf"/>
 <foaf:interest rdf:resource="http://dbpedia.org/page/Art_history"/>
 <foaf:interest rdf:resource="http://dbpedia.org/page/Orphan_Black"/>

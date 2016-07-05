@@ -35,7 +35,18 @@ puts "interests"
 q_parsed = SPARQL.parse(interest_query)
 q_parsed.execute(graph) do |result|
   puts result.interest
+end
 
+tmp_query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  PREFIX dbo: <http://dbpedia.org/ontology/>
+  SELECT ?abs
+    WHERE { ?s dbo:abstract ?abs
+           FILTER (lang(?abs) = 'en')}"
+
+tmp_graph = RDF::Graph.load("http://dbpedia.org/resource/Elvis_Presley")
+sse_abstracts = SPARQL.parse(tmp_query)
+sse_abstracts.execute(tmp_graph) do |result|
+  puts result.abs
 end
 
 

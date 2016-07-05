@@ -17,9 +17,13 @@
 <foaf:homepage rdf:resource="http://web.stanford.edu/~ahafele/"/>
 <foaf:workplaceHomepage rdf:resource="http://library.stanford.edu/"/>
 <foaf:schoolHomepage rdf:resource="http://drexel.edu/"/>
-<foaf:knows>
-<foaf:Person>
-<foaf:name>Bess Sadler</foaf:name>
-<foaf:mbox_sha1sum>24e49eecbeab7eb96b5ab1a34eb5ef64f9553acd</foaf:mbox_sha1sum>
-<rdfs:seeAlso rdf:resource="http://stanford.edu/~bess/foaf.rdf "/></foaf:Person></foaf:knows></foaf:Person>
+<foaf:knows rdf:resource="http://stanford.edu/~bess/foaf.rdf"/>
+<foaf:knows rdf:resource="http://stanford.edu/~dlrueda/foaf.rdf"/>
+<foaf:knows rdf:resource="http://stanford.edu/~sdoljack/sdoljack_foaf.rdf"/>
+<foaf:knows rdf:resource="http://stanford.edu/~laneymcg/laney.rdf"/>
+<foaf:knows rdf:resource="http://stanford.edu/~thorsenh/foaf.rdf"/>
+<foaf:interest rdf:resource="http://dbpedia.org/page/Art_history"/>
+<foaf:interest rdf:resource="http://dbpedia.org/page/Orphan_Black"/>
+<foaf:interest rdf:resource="http://dbpedia.org/page/Equestrianism"/>
+</foaf:Person>
 </rdf:RDF>

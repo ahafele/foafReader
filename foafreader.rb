@@ -20,7 +20,7 @@ end
 
 # abstract_for('http://dbpedia.org/resource/Quilting')
 
-graph = RDF::Graph.load("me.rdf")
+graph = RDF::Graph.load("foaf.rdf")
 
 puts graph.inspect
 

@@ -1,58 +1,55 @@
+# Following tutorial at http://blog.datagraph.org/2010/04/parsing-rdf-with-ruby
 require 'rdf'
-#require 'rdf/raptor'
+require 'linkeddata'
 require 'sparql'
-#require 'sparql-client'
 require 'net/http'
 require 'openssl'
-require 'linkeddata'
 
-graph = RDF::Graph.load("foaf.rdf") #loading my foaf.rdf file as a graph using the rdf gem with the graph object and load method?
-puts graph.inspect #outputing the graph with the inspect method
+def abstract_for(interest)
+  tmp_query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX dbo: <http://dbpedia.org/ontology/>
+    SELECT ?abs
+      WHERE { ?s dbo:abstract ?abs
+        FILTER (lang(?abs) = 'en')}"
+  tmp_graph = RDF::Graph.load(interest)
+  sse_abstracts = SPARQL.parse(tmp_query)
+  sse_abstracts.execute(tmp_graph) do |res|
+    puts res.abs
+  end
+end
 
-#sets variable query to output of sparql query
+# abstract_for('http://dbpedia.org/resource/Quilting')
+
+graph = RDF::Graph.load("me.rdf")
+
+puts graph.inspect
+
 query = "
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT DISTINCT ?o
- WHERE { ?s foaf:knows ?o }
+  WHERE { ?s foaf:knows ?o }
 "
-#query that graph (HOW DOES IT KNOW TO QUERY THAT GRAPH?) for distinct objects of the predicate foaf:knows. The objects of the "knows" statements in the foaf.rdf file
 
-puts "beforeloading" #outputs text beforeloading
-sse = SPARQL.parse(query) #creates the variable sse and sets it to the output of parsing the above sparql query. USES THE SPARQL OBJECT? OR CALLS THE SPARQL GEM IN ORDER TO USE PARSE?
-sse.execute(graph) do |result| #execute the sparql query against the graph from above which |result| is the answer and 'd0' iterates over it. do is like for each
- puts result.o #outputs results of above query
- triples = RDF::Resource(RDF::URI.new(result.o)) #puts the triples into variable triple. This explicitly cast the variable.
- graph.load(triples) #loads these triples to our graph
-end
-puts "afterloading" #outputs text afterloading
-sse.execute(graph) do |result| #run query again now that we have added the above to the graph
- puts result.o
+puts "Before loading"
+sparql_query = SPARQL.parse(query)
+sparql_query.execute(graph) do |result|
+  puts result.o
+  graph.load(result.o)
 end
 
-#sparql query for evreyones interests
+# puts "After loading"
+# sparql_query.execute(graph) do |result|
+#   puts result.o
+# end
+
+puts 'Querying interests'
 interest_query = "
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-SELECT DISTINCT ?interest
-  WHERE { ?s foaf:interest ?interest}
+SELECT DISTINCT ?o
+  WHERE { ?s foaf:interest ?o }
 "
-#query our graph for all the objects (?interest) of predicate foaf:interest
-puts "interests" #outputs text interests
-q_parsed = SPARQL.parse(interest_query) #parse the query and put it in variable q_parsed.
-q_parsed.execute(graph) do |result| #??
-  puts result.interest #output results of interest_query? OR OUTPUTS objects ?interest ??
-end
-
-tmp_query = "
-  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-  PREFIX dbo: <http://dbpedia.org/ontology/>
-  SELECT ?abs
-    WHERE { ?s dbo:abstract ?abs
-           FILTER (lang(?abs) = 'en')}
-  "
-#this is a query on the below graph. looking for abstracts where predicate is dbo:abstract
-tmp_graph = RDF::Graph.load("http://dbpedia.org/resource/Elvis_Presley") #create temp_graph with elvis presley resource
-#loading to new graph because of memory. could load to one theoretically.
-sse_abstracts = SPARQL.parse(tmp_query) #parse the results of above query
-sse_abstracts.execute(tmp_graph) do |result| #call that graph here.
-  puts result.abs #output results
+sparql_interest_query = SPARQL.parse(interest_query)
+sparql_interest_query.execute(graph) do |result|
+  puts result.o
+  abstract_for(result.o)
 end
